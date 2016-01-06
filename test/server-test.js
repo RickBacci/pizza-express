@@ -1,11 +1,10 @@
-const assert   = require('assert');
-const app      = require('../server');
-const request  = require('request');
-const fixtures = require('./fixtures');
+const assert  = require('assert');
+const request = require('request');
+const app     = require('../server');
 
 describe('Server', () => {
 
-  before(done => {
+  before((done) => {
     this.port = 9876;
 
     this.server = app.listen(this.port, (err, result) => {
@@ -16,9 +15,7 @@ describe('Server', () => {
     this.request = request.defaults({
       baseUrl: 'http://localhost:9876/'
     });
-
   });
-
 
   after(() => {
     this.server.close();
@@ -29,6 +26,7 @@ describe('Server', () => {
   });
 
   describe('GET /', () => {
+
     it('should return a 200', (done) => {
       this.request.get('/', (error, response) => {
         if (error) { done(error); }
@@ -45,7 +43,6 @@ describe('Server', () => {
         assert(response.body.includes(title),
                `"${response.body}" does not include "${title}".`);
                done();
-
       });
     });
 

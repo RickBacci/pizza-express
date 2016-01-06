@@ -82,10 +82,11 @@ describe('Server', () => {
   describe('GET /pizzas/:id', () => {
 
     beforeEach(() => {
-      app.locals.pizzas.testPizza = fixtures.validPizza;
+      app.locals.pizzas = {};
     });
 
     it('should not return 404', (done) => {
+      app.locals.pizzas.testPizza = fixtures.validPizza;
       this.request.get('/pizzas/testPizza', (error, response) => {
         if (error) { done(error); }
         assert.notEqual(response.statusCode, 404);
@@ -94,6 +95,7 @@ describe('Server', () => {
     });
 
     it('should return a page that has the title of the pizza', (done) => {
+      app.locals.pizzas.testPizza = fixtures.validPizza;
       var pizza = app.locals.pizzas.testPizza;
 
       this.request.get('/pizzas/testPizza', (error, response) => {
@@ -109,7 +111,9 @@ describe('Server', () => {
 
       this.request.post('/pizzas', { form: payload }, (error, response) => {
         if (error) { done(error); }
+
         var newPizzaId = Object.keys(app.locals.pizzas)[0];
+
         assert.equal(response.headers.location, '/pizzas/' + newPizzaId);
         done();
       });
